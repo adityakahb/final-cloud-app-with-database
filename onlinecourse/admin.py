@@ -7,12 +7,12 @@ from .models import Course, Lesson, Instructor, Learner, Choice, Question
 
 class ChoiceInline(admin.StackedInline):
     model = Choice
-    extra = 5
+    extra = 3
 
 
 class QuestionInline(admin.StackedInline):
     model = Question
-    extra = 5
+    extra = 3
 
 
 class LessonInline(admin.StackedInline):
@@ -23,15 +23,10 @@ class LessonInline(admin.StackedInline):
 # Register your models here.
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [ChoiceInline]
-    list_display = ['question_text', 'grade']
-
-
-class LessonAdmin(admin.ModelAdmin):
-    inlines = [QuestionInline]
 
 
 class CourseAdmin(admin.ModelAdmin):
-    inlines = [LessonInline]
+    inlines = [LessonInline, QuestionInline]
     list_display = ('name', 'pub_date')
     list_filter = ['pub_date']
     search_fields = ['name', 'description']

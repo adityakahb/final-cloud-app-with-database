@@ -119,8 +119,8 @@ class Enrollment(models.Model):
 
 # Question Model
 class Question(models.Model):
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    question_text = models.CharField(max_length=320, default='Question text')
+    lesson = models.ForeignKey(Course, on_delete=models.CASCADE)
+    question_text = models.CharField(max_length=320)
     grade = models.FloatField(default=0.0)
 
 
@@ -134,9 +134,9 @@ class Question(models.Model):
 
 # Choice Model
 class Choice(models.Model):
-    question = models.ForeignKey(
-        Question, on_delete=models.CASCADE, default='')
-    choice_text = models.CharField(max_length=320, default='Choice text')
+    question_id = models.ForeignKey(
+        Question, on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=320)
     is_correct = models.BooleanField(default=False)
 
 
@@ -153,5 +153,5 @@ class Choice(models.Model):
 # Submission Model
 class Submission(models.Model):
     enrollment_id = models.ForeignKey(
-        Enrollment, on_delete=models.CASCADE, default='')
+        Enrollment, on_delete=models.CASCADE)
     choices = models.ManyToManyField(Choice)
