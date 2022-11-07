@@ -51,7 +51,7 @@
                 </div>
                 <div class="card-body">{{lesson.content}}</div>
             </div>
-            <form id="questionform" action="point to a submit view" method="post">
+            <form id="questionform" action="{% url 'onlinecourse:submit' course.id %}" method="post">
                 <div id="course_accordion">
                     {% for question in lesson.question_set.all %}
                     <div class="card my-2">
