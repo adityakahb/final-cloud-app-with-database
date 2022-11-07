@@ -152,6 +152,6 @@ class Choice(models.Model):
 
 # Submission Model
 class Submission(models.Model):
-    enrollment_id = models.ForeignKey(
+    enrollment = models.ForeignKey(
         Enrollment, on_delete=models.CASCADE)
     choices = models.ManyToManyField(Choice)

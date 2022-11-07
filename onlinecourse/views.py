@@ -115,7 +115,7 @@ def submit(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     user = request.user
     enrollment = Enrollment.objects.filter(user=user, course=course).get()
-    submission = Submission.objects.create(enrollment_id=enrollment.id)
+    submission = Submission.objects.create(enrollment=enrollment)
 
     answers = extract_answers(request)
     for a in answers:

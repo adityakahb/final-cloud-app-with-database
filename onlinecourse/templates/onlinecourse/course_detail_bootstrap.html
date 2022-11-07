@@ -29,7 +29,7 @@
                         {% csrf_token %}
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Username" name="username">
-                            <input type="password" class="form-control" placeholder="Username" name="psw">
+                            <input type="password" class="form-control" placeholder="Password" name="psw">
                             <button class="btn btn-primary" type="submit">Login</button>
                             <a class="btn btn-link" href="{% url 'onlinecourse:registration' %}">Sign Up</a>
                         </div>
@@ -53,6 +53,7 @@
             </div>
             {% endfor %}
         </div>
+        {% if user.is_authenticated %}
         <form id="questionform" action="{% url 'onlinecourse:submit' course.id %}" method="post">
             <div id="course_accordion">
                 {% for question in course.question_set.all %}
@@ -61,6 +62,7 @@
                         <a class="card-link" data-toggle="collapse"
                             href="#question_{{question.id}}">{{question.question_text}}</a>
                     </div>
+                    {% csrf_token %}
                     <div id="question_{{question.id}}" class="collapse" data-parent="#course_accordion">
                         <div class="card-body">
                             {% for choice in question.choice_set.all %}
@@ -76,6 +78,7 @@
             </div>
             <input class="btn btn-success btn-block my-2" type="submit" value="Submit">
         </form>
+        {% endif %}
         <!-- Task: show questions and choices -->
         <!-- <HINT> Use Bootstrap Collapse to hide exam first, more details could be found here
             https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
