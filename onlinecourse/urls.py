@@ -21,6 +21,6 @@ urlpatterns = [
     path('<int:course_id>/submit/', views.submit, name='submit'),
 
     # <HINT> Create a route for show_exam_result view
-    # path('<int:course_id>/result/', views.result, name='result'),
+    path('<int:course_id>/result/', views.show_result, name='show_result'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
