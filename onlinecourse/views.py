@@ -123,7 +123,7 @@ def submit(request, course_id):
         submission.choices.add(temp_c)
 
     submission.save()
-    return HttpResponseRedirect(reverse(viewname='onlinecourse:show_result', args=(course.id, submission.id)))
+    return HttpResponseRedirect(reverse(viewname='onlinecourse:show_exam_result', args=(course.id, submission.id)))
 
 # <HINT> A example method to collect the selected choices from the exam form from the request object
 
@@ -145,9 +145,31 @@ def extract_answers(request):
     # For each selected choice, check if it is a correct answer or not
     # Calculate the total score
 # def show_exam_result(request, course_id, submission_id):
-def show_result(request, course_id, submission_id):
+def show_exam_result(request, course_id, submission_id):
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
-    total = 0
+    total_marks = 0
+    total_earned = 0
+    question_results = {}
+    choice_results = {}
+    for question in course.question_set.all():
+        marks = 0
+        earned = 0
+        for choice in question.choice_set.all():
+            marks += 1
+            is_correct = choice.is_correct
+            count = submission.choices.filter(id=choice.id).count()
+            check_for_correct = count > 0
+            choice_results[choice.id] = check_for_correct == is_correct
+            if check_for_correct == is_correct and check_for_correct == True:
+                earned += 1
+        question_results[question.id] = question.grade*(earned / marks)
+        total_marks += question.grade
+        total_earned += earned
     result = {}
+    result["course"] = course
+    result["submission"] = submission
+    result["total_marks"] = total_marks
+    result["total_earned"] = total_earned
+    result["grade"] = int((total_earned/total_marks)*100)
     return render(request, 'onlinecourse/exam_result_bootstrap.html', result)
